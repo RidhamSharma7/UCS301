@@ -1,0 +1,113 @@
+#include <iostream>
+using namespace std;
+#define MAX 10
+
+// a) Reverse elements of array
+void reverseArray(int arr[], int n) {
+    cout << "Original array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+    cout << endl;
+
+    for (int i = 0, j = n - 1; i < j; i++, j--) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    cout << "Reversed array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+    cout << endl;
+}
+
+// b) Matrix multiplication
+void multiplyMatrix(int A[MAX][MAX], int B[MAX][MAX], int r1, int c1, int r2, int c2) {
+    if (c1 != r2) {
+        cout << "Matrix multiplication not possible (c1 != r2)\n";
+        return;
+    }
+
+    int C[MAX][MAX] = {0};
+
+    for (int i = 0; i < r1; i++) {
+        for (int j = 0; j < c2; j++) {
+            for (int k = 0; k < c1; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+
+    cout << "Resultant Matrix:\n";
+    for (int i = 0; i < r1; i++) {
+        for (int j = 0; j < c2; j++) cout << C[i][j] << " ";
+        cout << endl;
+    }
+}
+
+// c) Transpose of a Matrix
+void transposeMatrix(int mat[MAX][MAX], int r, int c) {
+    cout << "Original Matrix:\n";
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) cout << mat[i][j] << " ";
+        cout << endl;
+    }
+
+    cout << "Transpose Matrix:\n";
+    for (int j = 0; j < c; j++) {
+        for (int i = 0; i < r; i++) cout << mat[i][j] << " ";
+        cout << endl;
+    }
+}
+
+int main() {
+    int choice;
+    do {
+        cout << "\n--- MENU ---\n";
+        cout << "1. Reverse Array\n";
+        cout << "2. Matrix Multiplication\n";
+        cout << "3. Transpose of Matrix\n";
+        cout << "4. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            int n;
+            cout << "Enter size of array: ";
+            cin >> n;
+            int arr[MAX];
+            cout << "Enter " << n << " elements: ";
+            for (int i = 0; i < n; i++) cin >> arr[i];
+            reverseArray(arr, n);
+
+        } else if (choice == 2) {
+            int r1, c1, r2, c2;
+            int A[MAX][MAX], B[MAX][MAX];
+            cout << "Enter rows and cols of Matrix A: ";
+            cin >> r1 >> c1;
+            cout << "Enter rows and cols of Matrix B: ";
+            cin >> r2 >> c2;
+
+            cout << "Enter Matrix A:\n";
+            for (int i = 0; i < r1; i++)
+                for (int j = 0; j < c1; j++) cin >> A[i][j];
+
+            cout << "Enter Matrix B:\n";
+            for (int i = 0; i < r2; i++)
+                for (int j = 0; j < c2; j++) cin >> B[i][j];
+
+            multiplyMatrix(A, B, r1, c1, r2, c2);
+
+        } else if (choice == 3) {
+            int r, c, mat[MAX][MAX];
+            cout << "Enter rows and cols of Matrix: ";
+            cin >> r >> c;
+            cout << "Enter Matrix:\n";
+            for (int i = 0; i < r; i++)
+                for (int j = 0; j < c; j++) cin >> mat[i][j];
+
+            transposeMatrix(mat, r, c);
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
