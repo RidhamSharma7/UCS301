@@ -1,0 +1,59 @@
+#include <iostream>
+using namespace std;
+
+
+int arr[MAX], n = 0;
+
+void createArray() {
+    cout << "Enter number of elements: ";
+    cin >> n;
+    cout << "Enter elements: ";
+    for (int i = 0; i < n; i++) cin >> arr[i];
+}
+
+void displayArray() {
+    cout << "Array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+    cout << endl;
+}
+
+void insertElement() {
+    int pos, val;
+    cout << "Enter position (0-based) and value: ";
+    cin >> pos >> val;
+    if (pos < 0 || pos > n) { cout << "Invalid position\n"; return; }
+    for (int i = n; i > pos; i--) arr[i] = arr[i - 1];
+    arr[pos] = val; n++;
+}
+
+void deleteElement() {
+    int pos;
+    cout << "Enter position (0-based) to delete: ";
+    cin >> pos;
+    if (pos < 0 || pos >= n) { cout << "Invalid position\n"; return; }
+    for (int i = pos; i < n - 1; i++) arr[i] = arr[i + 1];
+    n--;
+}
+
+void linearSearch() {
+    int key, found = -1;
+    cout << "Enter key to search: "; cin >> key;
+    for (int i = 0; i < n; i++) if (arr[i] == key) { found = i; break; }
+    if (found != -1) cout << "Found at position " << found << endl;
+    else cout << "Not Found\n";
+}
+
+int main() {
+    int choice;
+    while (true) {
+        cout << "\n1.CREATE 2.DISPLAY 3.INSERT 4.DELETE 5.SEARCH 6.EXIT\n";
+        cin >> choice;
+        if (choice == 1) createArray();
+        else if (choice == 2) displayArray();
+        else if (choice == 3) insertElement();
+        else if (choice == 4) deleteElement();
+        else if (choice == 5) linearSearch();
+        else if (choice == 6) break;
+        else cout << "Invalid Choice\n";
+    }
+}
