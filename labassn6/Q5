@@ -1,0 +1,62 @@
+// checking if a linkd list is a circular linked list or not?
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node* head = NULL;
+
+// Create a simple linked list for testing
+void insert(int x) {
+    Node* temp = new Node{x, NULL};
+
+    if (head == NULL) {
+        head = temp;
+        return;
+    }
+
+    Node* curr = head;
+    while (curr->next != NULL)
+        curr = curr->next;
+
+    curr->next = temp;
+}
+
+// Function to check if list is circular
+bool isCircular() {
+    if (head == NULL) return false;
+
+    Node* curr = head->next;
+
+    while (curr != NULL && curr != head) {
+        curr = curr->next;
+    }
+
+    // if curr == head → loop back to start → circular
+    return (curr == head);
+}
+
+int main() {
+    // Example: 2 -> 4 -> 6 -> 7 -> 5 (NOT circular)
+    insert(2);
+    insert(4);
+    insert(6);
+    insert(7);
+    insert(5);
+
+    // To make it circular uncomment this line:
+    // Node* tail = head;
+    // while (tail->next != NULL) tail = tail->next;
+    // tail->next = head;
+
+    if (isCircular())
+        cout << "Linked List is Circular";
+    else
+        cout << "Linked List is Not Circular";
+
+    return 0;
+}
