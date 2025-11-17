@@ -1,0 +1,88 @@
+// finding size of a doubly linked list
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+};
+
+Node* head = NULL;
+
+void insert(int x) {
+    Node* temp = new Node{x, NULL, head};
+    if (head != NULL) head->prev = temp;
+    head = temp;
+}
+
+int sizeDLL() {
+    int count = 0;
+    Node* curr = head;
+    while (curr != NULL) {
+        count++;
+        curr = curr->next;
+    }
+    return count;
+}
+
+int main() {
+    insert(10);
+    insert(20);
+    insert(30);
+
+    cout << "Size of Doubly Linked List = " << sizeDLL();
+    return 0;
+}
+
+
+// finding size of a circular linked list
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node* head = NULL;
+
+void insert(int x) {
+    Node* temp = new Node{x, NULL};
+
+    if (head == NULL) {
+        head = temp;
+        temp->next = head;
+        return;
+    }
+
+    Node* curr = head;
+    while (curr->next != head) curr = curr->next;
+
+    curr->next = temp;
+    temp->next = head;
+}
+
+int sizeCLL() {
+    if (head == NULL) return 0;
+
+    int count = 0;
+    Node* curr = head;
+
+    do {
+        count++;
+        curr = curr->next;
+    } while (curr != head);
+
+    return count;
+}
+
+int main() {
+    insert(5);
+    insert(15);
+    insert(25);
+
+    cout << "Size of Circular Linked List = " << sizeCLL();
+    return 0;
+}
