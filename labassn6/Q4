@@ -1,0 +1,65 @@
+// checking if the word level is a palindrome? using doubly linked list
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    char data;
+    Node* prev;
+    Node* next;
+};
+
+Node* head = NULL;
+
+// Insert at end
+void insertChar(char ch) {
+    Node* temp = new Node{ch, NULL, NULL};
+
+    if (head == NULL) {
+        head = temp;
+        return;
+    }
+
+    Node* curr = head;
+    while (curr->next != NULL)
+        curr = curr->next;
+
+    curr->next = temp;
+    temp->prev = curr;
+}
+
+// Check if DLL is palindrome
+bool isPalindrome() {
+    if (head == NULL) return true;
+
+    Node* left = head;
+    Node* right = head;
+
+    // move right to last node
+    while (right->next != NULL)
+        right = right->next;
+
+    // compare from both ends
+    while (left != right && right->next != left) {
+        if (left->data != right->data)
+            return false;
+        left = left->next;
+        right = right->prev;
+    }
+
+    return true;
+}
+
+int main() {
+    string word = "level";
+
+    for (char c : word)
+        insertChar(c);
+
+    if (isPalindrome())
+        cout << "True";
+    else
+        cout << "False";
+
+    return 0;
+}
