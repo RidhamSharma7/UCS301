@@ -1,0 +1,56 @@
+// improved selection sort
+
+#include <stdio.h>
+
+void improvedSelectionSort(int a[], int n) {
+    int i, left = 0, right = n - 1;
+
+    while (left < right) {
+        int minIndex = left;
+        int maxIndex = left;
+
+        // Find minimum and maximum in the remaining array
+        for (i = left; i <= right; i++) {
+            if (a[i] < a[minIndex])
+                minIndex = i;
+            if (a[i] > a[maxIndex])
+                maxIndex = i;
+        }
+
+        // Place minimum at left
+        int temp = a[left];
+        a[left] = a[minIndex];
+        a[minIndex] = temp;
+
+        // If max element was swapped with a[left], update its index
+        if (maxIndex == left)
+            maxIndex = minIndex;
+
+        // Place maximum at right
+        temp = a[right];
+        a[right] = a[maxIndex];
+        a[maxIndex] = temp;
+
+        left++;
+        right--;
+    }
+}
+
+int main() {
+    int a[100], n, i;
+
+    printf("Enter size: ");
+    scanf("%d", &n);
+
+    printf("Enter elements: ");
+    for (i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+
+    improvedSelectionSort(a, n);
+
+    printf("Sorted array: ");
+    for (i = 0; i < n; i++)
+        printf("%d ", a[i]);
+
+    return 0;
+}
