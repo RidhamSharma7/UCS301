@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node* head = NULL;
+
+// Simple function to insert at end for testing
+void insert(int x) {
+    Node* temp = new Node{x, NULL};
+
+    if (head == NULL) {
+        head = temp;
+        temp->next = head;
+        return;
+    }
+
+    Node* curr = head;
+    while (curr->next != head) curr = curr->next;
+
+    curr->next = temp;
+    temp->next = head;
+}
+
+// Display: print all nodes and repeat head at end
+void displayCircular() {
+    if (head == NULL) return;
+
+    Node* curr = head;
+
+    // print full circle normally
+    do {
+        cout << curr->data << " ";
+        curr = curr->next;
+    } while (curr != head);
+
+    // repeat head node value
+    cout << head->data;
+}
+
+int main() {
+    // Example input: 20 → 100 → 40 → 80 → 60
+    insert(20);
+    insert(100);
+    insert(40);
+    insert(80);
+    insert(60);
+
+    // Required Output: 20 100 40 80 60 20
+    displayCircular();
+
+    return 0;
+}
