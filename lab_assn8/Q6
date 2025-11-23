@@ -1,0 +1,89 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 50
+
+class PriorityQueue {
+    int heap[MAX];
+    int size;
+
+public:
+    PriorityQueue() { size = 0; }
+
+   
+    void insert(int x) {
+        if(size == MAX) {
+            cout << "Overflow\n";
+            return;
+        }
+        heap[size] = x;
+        int i = size;
+        size++;
+
+        while(i > 0 && heap[(i-1)/2] < heap[i]) {
+            int temp = heap[i];
+            heap[i] = heap[(i-1)/2];
+            heap[(i-1)/2] = temp;
+            i = (i-1)/2;
+        }
+    }
+
+        int deleteMax() {
+        if(size == 0) {
+            cout << "Underflow\n";
+            return -1;
+        }
+
+        int maxVal = heap[0];
+        heap[0] = heap[size-1];
+        size--;
+
+        
+        int i = 0;
+        while(true) {
+            int left = 2*i + 1;
+            int right = 2*i + 2;
+            int largest = i;
+
+            if(left < size && heap[left] > heap[largest])
+                largest = left;
+            if(right < size && heap[right] > heap[largest])
+                largest = right;
+
+            if(largest == i) break;
+
+            int temp = heap[i];
+            heap[i] = heap[largest];
+            heap[largest] = temp;
+
+            i = largest;
+        }
+
+        return maxVal;
+    }
+
+   
+    void display() {
+        for(int i=0; i<size; i++)
+            cout << heap[i] << " ";
+        cout << endl;
+    }
+};
+
+int main() {
+    PriorityQueue pq;
+
+    pq.insert(30);
+    pq.insert(20);
+    pq.insert(50);
+    pq.insert(10);
+    pq.insert(40);
+
+    cout << "Priority Queue (Heap): ";
+    pq.display();
+
+    cout << "Deleted Max = " << pq.deleteMax() << endl;
+
+    cout << "After deletion: ";
+    pq.display();
+}
