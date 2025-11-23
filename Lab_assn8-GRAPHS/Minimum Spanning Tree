@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+
+struct Edge {
+    int u, v, w;
+};
+
+int parent[10];
+
+int find(int x) {
+    if(parent[x] == x) return x;
+    return parent[x] = find(parent[x]);
+}
+
+void unite(int a, int b) {
+    parent[find(a)] = find(b);
+}
+
+int main() {
+    Edge edges[] = {
+        {0,1,10},
+        {0,2,6},
+        {0,3,5},
+        {1,3,15},
+        {2,3,4}
+    };
+
+    int nEdges = 5;
+
+    // sort edges by weight
+    for(int i=0;i<nEdges;i++) {
+        for(int j=i+1;j<nEdges;j++) {
+            if(edges[j].w < edges[i].w)
+                swap(edges[i], edges[j]);
+        }
+    }
+
+    for(int i=0;i<10;i++) parent[i] = i;
+
+    cout << "MST edges:\n";
+    for(int i=0;i<nEdges;i++) {
+        int u = edges[i].u;
+        int v = edges[i].v;
+        int w = edges[i].w;
+
+        if(find(u) != find(v)) {
+            cout << u << " - " << v << " : " << w << "\n";
+            unite(u, v);
+        }
+    }
+}
