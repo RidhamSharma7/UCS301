@@ -1,0 +1,104 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+};
+
+Node* createNode(int x) {
+    Node* t = new Node();
+    t->data = x;
+    t->left = t->right = NULL;
+    return t;
+}
+
+
+Node* insertNode(Node* root, int x) {
+    if(root == NULL) return createNode(x);
+
+    if(x < root->data)
+        root->left = insertNode(root->left, x);
+    else if(x > root->data)
+        root->right = insertNode(root->right, x);
+    else
+        cout << "Duplicate not allowed\n";
+
+    return root;
+}
+
+
+Node* findMin(Node* root) {
+    while(root->left != NULL)
+        root = root->left;
+    return root;
+}
+
+
+Node* deleteNode(Node* root, int key) {
+    if(root == NULL) return root;
+
+    if(key < root->data)
+        root->left = deleteNode(root->left, key);
+
+    else if(key > root->data)
+        root->right = deleteNode(root->right, key);
+
+    else { 
+        // Case 1: No child
+        if(root->left == NULL && root->right == NULL) {
+            delete root;
+            return NULL;
+        }
+
+        // Case 2: One child
+        else if(root->left == NULL) {
+            Node* temp = root->right;
+            delete root;
+            return temp;
+        }
+        else if(root->right == NULL) {
+            Node* temp = root->left;
+            delete root;
+            return temp;
+        }
+
+        // Case 3: Two children
+        Node* temp = findMin(root->right);
+        root->data = temp->data;
+        root->right = deleteNode(root->right, temp->data);
+    }
+    return root;
+}
+
+
+int maxDepth(Node* root) {
+    if(root == NULL) return 0;
+    int L = maxDepth(root->left);
+    int R = maxDepth(root->right);
+    return 1 + (L > R ? L : R);
+}
+
+
+int minDepth(Node* root) {
+    if(root == NULL) return 0;
+    int L = minDepth(root->left);
+    int R = minDepth(root->right);
+
+    if(L == 0) return 1 + R;
+    if(R == 0) return 1 + L;
+    return 1 + (L < R ? L : R);
+}
+
+int main() {
+    Node* root = NULL;
+
+    int arr[] = {20,10,5,15,30,25,35};
+    for(int x : arr)
+        root = insertNode(root, x);
+
+    root = deleteNode(root, 10); // example deletion
+
+    cout << "Max Depth = " << maxDepth(root) << endl;
+    cout << "Min Depth = " << minDepth(root) << endl;
+}
