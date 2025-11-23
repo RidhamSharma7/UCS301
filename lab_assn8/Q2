@@ -1,0 +1,114 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+};
+
+Node* createNode(int x) {
+    Node* t = new Node();
+    t->data = x;
+    t->left = t->right = NULL;
+    return t;
+}
+
+Node* insertNode(Node* root, int x) {
+    if(root == NULL) return createNode(x);
+    if(x < root->data) root->left = insertNode(root->left, x);
+    else root->right = insertNode(root->right, x);
+    return root;
+}
+
+
+Node* searchRec(Node* root, int key) {
+    if(root == NULL || root->data == key) return root;
+    if(key < root->data) return searchRec(root->left, key);
+    return searchRec(root->right, key);
+}
+
+
+Node* searchNonRec(Node* root, int key) {
+    while(root != NULL) {
+        if(root->data == key) return root;
+        else if(key < root->data) root = root->left;
+        else root = root->right;
+    }
+    return NULL;
+}
+
+
+Node* minimum(Node* root) {
+    while(root && root->left)
+        root = root->left;
+    return root;
+}
+
+
+Node* maximum(Node* root) {
+    while(root && root->right)
+        root = root->right;
+    return root;
+}
+
+
+Node* inorderSuccessor(Node* root, Node* x) {
+    if(x->right) return minimum(x->right);
+
+    Node* succ = NULL;
+    while(root) {
+        if(x->data < root->data) {
+            succ = root;
+            root = root->left;
+        } else if(x->data > root->data)
+            root = root->right;
+        else break;
+    }
+    return succ;
+}
+
+/////////////////////////////
+// (e) INORDER PREDECESSOR
+/////////////////////////////
+Node* inorderPredecessor(Node* root, Node* x) {
+    if(x->left) return maximum(x->left);
+
+    Node* pred = NULL;
+    while(root) {
+        if(x->data > root->data) {
+            pred = root;
+            root = root->right;
+        } else if(x->data < root->data)
+            root = root->left;
+        else break;
+    }
+    return pred;
+}
+
+
+int main() {
+    Node* root = NULL;
+    int arr[] = {20,10,5,15,30,25,35};
+    for(int x : arr)
+        root = insertNode(root, x);
+
+    int key = 15;
+    Node* x = searchRec(root, key);
+
+    cout << "Recursive Search: " << (x ? "Found" : "Not Found") << endl;
+
+    cout << "Non-Recursive Search: "
+         << (searchNonRec(root, key) ? "Found" : "Not Found") << endl;
+
+    cout << "Minimum = " << minimum(root)->data << endl;
+    cout << "Maximum = " << maximum(root)->data << endl;
+
+    Node* succ = inorderSuccessor(root, x);
+    Node* pred = inorderPredecessor(root, x);
+
+    cout << "Inorder Successor of " << key << " = "
+         << (succ ? succ->data : -1) << endl;
+
+    cout << "Inorder Predecessor of " << key << " = "
+         << (pred ? pred->data : -1) << endl;
+}
