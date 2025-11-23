@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+};
+
+Node* createNode(int x) {
+    Node* t = new Node();
+    t->data = x;
+    t->left = t->right = NULL;
+    return t;
+}
+
+
+Node* insertNode(Node* root, int x) {
+    if(root == NULL) return createNode(x);
+    if(x < root->data) root->left = insertNode(root->left, x);
+    else root->right = insertNode(root->right, x);
+    return root;
+}
+
+
+
+bool isBSTUtil(Node* root, Node* &prev) {
+    if(root == NULL) return true;
+
+    if(!isBSTUtil(root->left, prev)) return false;
+
+    if(prev != NULL && root->data <= prev->data)
+        return false;
+
+    prev = root;
+
+    return isBSTUtil(root->right, prev);
+}
+
+bool isBST(Node* root) {
+    Node* prev = NULL;
+    return isBSTUtil(root, prev);
+}
+
+
+
+int main() {
+    Node* root = NULL;
+
+    // Make a BST
+    root = insertNode(root, 20);
+    insertNode(root, 10);
+    insertNode(root, 30);
+    insertNode(root, 5);
+    insertNode(root, 15);
+
+    if(isBST(root))
+        cout << "Tree is a BST\n";
+    else
+        cout << "Tree is NOT a BST\n";
+}
